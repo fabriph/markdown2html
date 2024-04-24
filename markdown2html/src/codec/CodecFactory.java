@@ -7,8 +7,6 @@ public class CodecFactory {
                 return new HTMLDeserializer();
             case MARKDOWN:
                 return new MarkdownDeserializer();
-//            case PLAIN_TEXT:
-//                break;
             default:
                 throw new RuntimeException(
                         String.format("Invalid configuration, deserializer type %s not supported", format));
@@ -19,6 +17,8 @@ public class CodecFactory {
         switch (format) {
             case HTML:
                 return new HTMLSerializer();
+            case PLAIN_TEXT:
+                return new PlainTextSerializer();
             default:
                 throw new RuntimeException(
                         String.format("Invalid configuration, serializer type %s not supported", format));

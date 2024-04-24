@@ -2,6 +2,7 @@ import codec.CodecFactory;
 import codec.Deserializer;
 import codec.Format;
 import codec.Serializer;
+import util.FileUtil;
 
 import java.io.*;
 import java.util.logging.Level;
@@ -17,7 +18,7 @@ public class Converter {
      * TODO: infer {@code from}?
      */
     public static void convert(String filePath, Format from, Format to) throws IOException {
-        String outputFilePath = filePath + "_" + to;
+        String outputFilePath = FileUtil.getOutputFilePath(filePath, to);
         LOGGER.log(Level.INFO, "Converting file {0} from format {1} to format {2}. Output file: {3}", new Object[]{filePath, from, to, outputFilePath});
 
         Deserializer deserializer = CodecFactory.newDeserializer(from);
@@ -30,22 +31,13 @@ public class Converter {
             String originalLine = inputReader.readLine();
 
             while (originalLine != null) {
-//                sb.append(line);
-//                sb.append(System.lineSeparator());
-                System.out.println("originalLine: " + originalLine);
-
                 String vanillaLine = deserializer.deserialize(originalLine);
-                System.out.println("vanillaLine: " + originalLine);
-
                 String convertedLine = serializer.serialize(vanillaLine);
-                System.out.println("convertedLine: " + convertedLine);
-
                 outputWriter.write(convertedLine);
                 outputWriter.write(System.lineSeparator());
 
                 originalLine = inputReader.readLine();
             }
-//            String everything = sb.toString();
         } catch (FileNotFoundException e) {
             LOGGER.log(Level.WARNING, "File not found {}: {}", new Object[]{filePath, e});
         } finally {
