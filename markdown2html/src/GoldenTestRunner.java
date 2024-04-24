@@ -29,4 +29,20 @@ public class GoldenTestRunner {
 
         // TODO: compare file output to its golden.
     }
+
+    @Test
+    void test_empty_md_html() throws IOException {
+        String filePath = "/Users/fabriph/dev/markdown2html/markdown2html/test/input/test-empty.md";
+        Converter.convert(filePath, Format.MARKDOWN, Format.HTML);
+
+        // TODO: compare file output to its golden.
+    }
+
+    @Test
+    void test_blank_lines_md_html() throws IOException {
+        String filePath = "/Users/fabriph/dev/markdown2html/markdown2html/test/input/test-blank-lines.md";
+        Converter.convert(filePath, Format.MARKDOWN, Format.HTML);
+
+        // TODO: compare file output to its golden.
+    }
 }
