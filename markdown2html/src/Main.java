@@ -7,10 +7,17 @@ import java.util.logging.Logger;
 public class Main {
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 
+    /**
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *
+     * Note to the interviewers: the main entry point of this framework is currently {@link GoldenTestRunner}.
+     *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     */
     public static void main(String[] args) {
-        LOGGER.log(Level.INFO, "START");
-
-        // TODO: implement to crawl all files in input.
+        // TODO: implement code to crawl all files in input.
         // TODO: don't use absolute path.
         String filePath = "/Users/fabriph/dev/markdown2html/markdown2html/test/input/test1.md";
         try {
@@ -18,7 +25,5 @@ public class Main {
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "IOException when processing file {}: {}", new Object[]{filePath, e});
         }
-
-        LOGGER.log(Level.INFO, "END");
     }
 }

@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 public class BulkRegExBuilder {
-    // TODO: use instead a Pair. Maybe from a known library or from my own.
+    // TODO: instead of Map.Entry use a Pair class. Maybe from a known library or from my own.
     List<Map.Entry<String, String>> patterns;
 
     public BulkRegExBuilder() {

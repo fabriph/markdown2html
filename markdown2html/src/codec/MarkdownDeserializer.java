@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+/**
+ * Converts Markdown content to HTML.
+ */
 public class MarkdownDeserializer implements Deserializer {
     List<Map.Entry<Pattern, String>> patterns;
 
@@ -23,7 +26,6 @@ public class MarkdownDeserializer implements Deserializer {
                 .add("^#### (.*)", "<h4>$1</h4>")  // H4
                 .add("^##### (.*)", "<h5>$1</h5>")  // H5
                 .add("^###### (.*)", "<h6>$1</h6>")  // H6
-
 
                 // Example: "[Link text](https://www.example.com)"
                 // to "<a href=\"https://www.example.com\">Link text</a>"
