@@ -13,30 +13,43 @@ public class Converter {
 
 
     /**
-     * TODO: we could receive a param {@code Type from} and {@code Type to}, so this converter could deserialize and
-     * serialize from anything to anything.
-     * TODO: infer {@code from}?
+     * Converts the content of {@code filePath} from format {@code fromFormat} to {@code toFormat}.
+     *
+     * TODO: perhaps infer {@code fromFormat} from {@code filePath}.
      */
-    public static void convert(String filePath, Format from, Format to) throws IOException {
-        String outputFilePath = FileUtil.getOutputFilePath(filePath, to);
-        LOGGER.log(Level.INFO, "Converting file {0} from format {1} to format {2}. Output file: {3}", new Object[]{filePath, from, to, outputFilePath});
+    public static void convert(String filePath, Format fromFormat, Format toFormat) throws IOException {
+        String outputFilePath = FileUtil.getOutputFilePath(filePath, toFormat);
+        LOGGER.log(
+                Level.INFO,
+                "Converting file {0} from format {1} to format {2}. Output file: {3}",
+                new Object[]{filePath, fromFormat, toFormat, outputFilePath});
 
-        Deserializer deserializer = CodecFactory.newDeserializer(from);
-        Serializer serializer = CodecFactory.newSerializer(to);
+        Deserializer deserializer = CodecFactory.newDeserializer(fromFormat);
+        Serializer serializer = CodecFactory.newSerializer(toFormat);
 
         final BufferedWriter outputWriter = new BufferedWriter(new FileWriter(outputFilePath));
 
-        // TODO: tidy up the exception hanlding and the try with resource.
+        // TODO: tidy up the exception handing and the try with resource.
         try(BufferedReader inputReader = new BufferedReader(new FileReader(filePath))) {
+            // Read the first line.
             String originalLine = inputReader.readLine();
+            String convertedLine = serializer.serialize(deserializer.deserialize(originalLine));
+            String nextOriginalLine;
+            String nextConvertedLine;
 
             while (originalLine != null) {
-                String vanillaLine = deserializer.deserialize(originalLine);
-                String convertedLine = serializer.serialize(vanillaLine);
+                // Read and convert.
+                nextOriginalLine = inputReader.readLine();
+                nextConvertedLine = serializer.serialize(deserializer.deserialize(nextOriginalLine));
+                convertedLine = serializer.reconcileMultilineArtifacts(convertedLine, nextConvertedLine);
+
+                // Emit.
                 outputWriter.write(convertedLine);
                 outputWriter.write(System.lineSeparator());
 
-                originalLine = inputReader.readLine();
+                // Advance.
+                originalLine = nextOriginalLine;
+                convertedLine = nextConvertedLine;
             }
         } catch (FileNotFoundException e) {
             LOGGER.log(Level.WARNING, "File not found {}: {}", new Object[]{filePath, e});

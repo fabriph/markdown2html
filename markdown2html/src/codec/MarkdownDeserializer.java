@@ -33,6 +33,10 @@ public class MarkdownDeserializer implements Deserializer {
 
     @Override
     public String deserialize(String input) {
+        if (input == null) {
+            return null;
+        }
+
         String transform = input;
         for (Map.Entry<Pattern, String> pair : patterns) {
             transform = pair.getKey().matcher(transform).replaceAll(pair.getValue());

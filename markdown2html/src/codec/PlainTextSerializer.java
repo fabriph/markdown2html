@@ -19,16 +19,27 @@ public class PlainTextSerializer implements Serializer {
                 .add("^<h4>(.*)</h4>", "$1")  // H4
                 .add("^<h5>(.*)</h5>", "$1")  // H5
                 .add("^<h6>(.*)</h6>", "$1")  // H6
+                .add("^<p>(.*)</p>", "$1")  // Paragraph
                 .add("<a href=\\\".*\\\">(.*)</a>", "$1")// Link, discards hyperlink.
                 .build();
     }
 
     @Override
     public String serialize(String input) {
+        if (input == null) {
+            return null;
+        }
+
         String transform = input;
         for (Map.Entry<Pattern, String> pair : patterns) {
             transform = pair.getKey().matcher(transform).replaceAll(pair.getValue());
         }
         return transform;
+    }
+
+    @Override
+    public String reconcileMultilineArtifacts(String convertedLine, String nextConvertedLine) {
+        // No multiline artifacts present in plain text.
+        return convertedLine;
     }
 }
