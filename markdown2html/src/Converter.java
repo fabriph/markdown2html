@@ -27,6 +27,7 @@ public class Converter {
         Deserializer deserializer = CodecFactory.newDeserializer(fromFormat);
         Serializer serializer = CodecFactory.newSerializer(toFormat);
 
+        // TODO: create output folder if it doesn't exist.
         final BufferedWriter outputWriter = new BufferedWriter(new FileWriter(outputFilePath));
 
         // TODO: tidy up the exception handing and the try with resource.
